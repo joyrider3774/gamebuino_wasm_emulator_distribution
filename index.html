@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=808, user-scalable=no">
+  <meta name="Description" content="Gamebuino emulator">
+  <title>Gamebuino Emulator</title>
+  <style>
+    body {
+      margin: 10px;
+      padding: 0;
+      background-color: #5391d8;
+      color: #012141;
+      font-size: 20px;
+      font-family: 'Open Sans', sans-serif;
+    }
+    
+    #info {
+      display: flex;
+    }
+
+    #info>div {
+      margin-right: 24px;
+    }
+
+    ul {
+      margin-top: 4px;
+    }
+  </style>
+
+<body>
+  <gamebuino-emulator id="gamebuino-emulator" src="game.bin"></gamebuino-emulator>
+  <div id="info">
+    <div>
+      <b>Controls</b>
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Button</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>w</td>
+            <td>Up</td>
+          </tr>
+          <tr>
+            <td>a</td>
+            <td>Left</td>
+          </tr>
+          <tr>
+            <td>s</td>
+            <td>Down</td>
+          </tr>
+          <tr>
+            <td>d</td>
+            <td>Right</td>
+          </tr>
+          <tr>
+            <td>j</td>
+            <td>A</td>
+          </tr>
+          <tr>
+            <td>k</td>
+            <td>B</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <div><b><label for="file-upload">Upload game</label></b><br /><input type="file" id="file-upload" /></div>
+  <script src="./url-search-params.js"></script> 
+  <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('bin')) {
+      let elem = document.querySelector("gamebuino-emulator");
+      if (elem) elem.src = urlParams.get('bin');
+    }      
+
+    document.getElementById("file-upload").onchange = function () {
+      if (this.files.length == 1) {
+        var f = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          document.querySelector("gamebuino-emulator").start(e.target.result);
+        };
+        reader.readAsArrayBuffer(f);
+        this.value = "";
+      }
+    };
+  </script>
+  <script src="./index.js" type="module"></script>
+</body></html>
